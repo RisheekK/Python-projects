@@ -12,30 +12,40 @@ class Point:
         self.x = x
         self.y = y
 
-    def falls_in_rectangle(self, lowleft, upright):
+    def falls_in_rectangle(self, rectangle):
         point = (self.x, self.y)
-        if (self.x > upright[0] or self.x < lowleft[0]) \
-        or (self.y > upright[1] or self.y < lowleft[1]):
-            return print(f"The point {point}does not fall in the rectangle)")
-        else:
-            origin = (float(lowleft[0]+upright[0])/2,float(lowleft[1]+upright[1])/2)
+        if (rectangle.bottomleft.x < self.x < rectangle.topright.x) and \
+        (rectangle.bottomleft.y < self.y < rectangle.topright.y):
+            origin = (float(rectangle.bottomleft.x + rectangle.topright.x)/2, float(rectangle.bottomleft.y + rectangle.topright.y)/2)
             distance_from_origin = distance(origin, point)
             dist = format(distance_from_origin, ".2f")
             return print(f"The point {point} falls in the rectangle \n\
 The Distance from origin {origin} is {dist}")
+        else:
+            return print(f"The point {point} does not fall in the rectangle)")
+        
+class Rectangle:
 
-code = 0
+    def __init__(self, bottomleft, topright):
+        self.bottomleft = bottomleft
+        self.topright = topright
+
+code =0
+
 while(code == 0):
-    bottomleft = (randint(0,9),randint(0,9))
-    topright = (randint(bottomleft[0],10),randint(bottomleft[1],10))
-    print(f"Geometry game\n\nThe given coordinates {bottomleft}, {topright} are the bottom left and top right coordinates of a rectangle\n\n\
+    bottomleft = Point(randint(0,5),randint(0,5))
+    topright = Point(randint(bottomleft.x+1,10), randint(bottomleft.y+1,10))
+    rectangle = Rectangle(bottomleft, topright)
+    print(f"\nGeometry game\n\nThe given coordinates \
+({bottomleft.x},{bottomleft.y}) ({topright.x},{topright.y}) are the bottom left and top right coordinates of a rectangle\n\n\
 Enter the coordinates of a point that's inside the given rectangle\n")
-    x = float(input("Enter the X coordinate of a point"))
-    y = float(input("Enter the Y coordinate of a point"))
+    x = float(input("Enter the X coordinate of a point -> "))
+    y = float(input("Enter the Y coordinate of a point -> "))
 
     point1 = Point(x,y)
-    Answer = point1.falls_in_rectangle(bottomleft,topright)
+    Answer = point1.falls_in_rectangle(rectangle)
 
-    control = input('''If you want to continue the game Enter 1 or "continue".\nIf you want to end the game Enter 0 or "end".''')
-    if control == 0 or "end":
-        code == 1
+    control = input('''If you want to continue the game Enter 1 or "continue".\nIf you want to end the game Enter 0 or "end" -> ''')
+    
+    if control == 0 or control == "end":
+        code = 1
